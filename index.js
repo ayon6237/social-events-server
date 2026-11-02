@@ -92,6 +92,20 @@ app.get("/events/:id", async (req, res) => {
 
 
 
+app.get("/my-events/:email", verifyToken, async (req, res) => {
+  if (req.user.email !== req.params.email) {
+    return res.status(403).send({ message: "Forbidden access" });
+  }
+  try {
+    const events = await Event.find({ creatorEmail: req.params.email });
+    res.send(events);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+
+
 app.get("/", (req, res) => {
   res.send("Social Events Server is running...");
 });
