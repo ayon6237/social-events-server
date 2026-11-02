@@ -80,6 +80,18 @@ app.get("/events/recent", async (req, res) => {
 
 
 
+
+app.get("/events/:id", async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+    res.send(event);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+
+
 app.get("/", (req, res) => {
   res.send("Social Events Server is running...");
 });
