@@ -30,6 +30,26 @@ const verifyToken = (req, res, next) => {
 
 
 
+
+app.post("/jwt", async (req, res) => {
+  const user = req.body;
+  const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "7d" });
+  res.send({ token });
+});
+
+// Create Event (Private)
+app.post("/events", verifyToken, async (req, res) => {
+  try {
+    const newEvent = new Event(req.body);
+    const result = await newEvent.save();
+    res.status(201).send(result);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+
+
 app.get("/", (req, res) => {
   res.send("Social Events Server is running...");
 });
