@@ -131,6 +131,26 @@ app.delete("/events/:id", verifyToken, async (req, res) => {
 
 
 
+
+app.post("/join-event", verifyToken, async (req, res) => {
+  try {
+    const { eventId, userEmail } = req.body;
+    const existingJoin = await JoinedEvent.findOne({ eventId, userEmail });
+    if (existingJoin) {
+      return res.status(400).send({ message: "You have already joined this event!" });
+    }
+
+    const joinEntry = new JoinedEvent({ eventId, userEmail });
+    const result = await joinEntry.save();
+    res.status(201).send(result);
+  } catch (error) {
+    console.error("Join error:", error);
+    res.status(400).send({ message: error.message });
+  }
+});
+
+
+
 app.get("/", (req, res) => {
   res.send("Social Events Server is running...");
 });
