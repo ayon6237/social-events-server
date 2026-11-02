@@ -151,6 +151,25 @@ app.post("/join-event", verifyToken, async (req, res) => {
 
 
 
+
+
+app.get("/joined-events/:email", verifyToken, async (req, res) => {
+  if (req.user.email !== req.params.email) {
+    return res.status(403).send({ message: "Forbidden access" });
+  }
+  try {
+    // Populating event data
+    const joined = await JoinedEvent.find({ userEmail: req.params.email })
+      .populate("eventId")
+      .sort({ joinedAt: -1 });
+    res.send(joined);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+
+
 app.get("/", (req, res) => {
   res.send("Social Events Server is running...");
 });
