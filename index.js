@@ -106,6 +106,20 @@ app.get("/my-events/:email", verifyToken, async (req, res) => {
 
 
 
+
+app.put("/events/:id", verifyToken, async (req, res) => {
+  try {
+    const result = await Event.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    res.send(result);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+
+
 app.get("/", (req, res) => {
   res.send("Social Events Server is running...");
 });
