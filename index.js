@@ -50,6 +50,21 @@ app.post("/events", verifyToken, async (req, res) => {
 
 
 
+
+app.get("/events", async (req, res) => {
+  try {
+    const currentDate = new Date();
+    const events = await Event.find({ date: { $gte: currentDate } }).sort({
+      date: 1,
+    });
+    res.send(events);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+
+
 app.get("/", (req, res) => {
   res.send("Social Events Server is running...");
 });
