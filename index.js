@@ -120,6 +120,17 @@ app.put("/events/:id", verifyToken, async (req, res) => {
 
 
 
+app.delete("/events/:id", verifyToken, async (req, res) => {
+  try {
+    const result = await Event.findByIdAndDelete(req.params.id);
+    res.send(result);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+
+
 app.get("/", (req, res) => {
   res.send("Social Events Server is running...");
 });
