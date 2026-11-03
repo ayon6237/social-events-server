@@ -5,6 +5,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const { Event, JoinedEvent } = require("./models");
 
+
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -12,7 +13,7 @@ const port = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: ["http://localhost:3000"], // Next.js frontend URL
+    origin: [`${process.env.CLIENT_URL}`], // Next.js frontend URL
     credentials: true,
   }),
 );
@@ -185,3 +186,5 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+export default app;
